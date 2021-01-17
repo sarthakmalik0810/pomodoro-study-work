@@ -1,0 +1,7 @@
+{
+  "name": "pomodoro-study-work",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
