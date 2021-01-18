@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+  <div id="time-container">
+    <div class="progress-bar">
+      <div #timer class="timer"></div>
+    </div>
+    <div class="buttons">
+      <ion-fab>
+        <ion-fab-button >
+          <ion-icon (click)="toggleClock()" name="play-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+  </div>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="filter-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="end">
+      <ion-fab-button><ion-icon name="settings"></ion-icon></ion-fab-button>
+      <ion-fab-button
+        ><ion-icon name="information-circle-outline"></ion-icon
+      ></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
