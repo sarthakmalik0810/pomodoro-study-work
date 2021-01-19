@@ -3,12 +3,16 @@
     <div class="progress-bar">
       <div #timer class="timer"></div>
     </div>
-    <div class="buttons">
-      <ion-fab>
-        <ion-fab-button >
+    <div class="button-list">
+        <ion-fab-button *ngIf="!isClockRunning">
           <ion-icon (click)="toggleClock()" name="play-outline"></ion-icon>
         </ion-fab-button>
-      </ion-fab>
+        <ion-fab-button *ngIf="isClockRunning">
+          <ion-icon (click)="toggleClock()" name="pause-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="displayStopButton">
+          <ion-icon (click)="toggleClock(true)" name="stop-outline"></ion-icon>
+        </ion-fab-button>
     </div>
   </div>
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">

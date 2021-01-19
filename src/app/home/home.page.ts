@@ -8,9 +8,12 @@ declare var ProgressBar: any;
 })
 export class HomePage implements OnInit {
   isClockRunning: boolean = false;
-  workSessionDuration = 4000;
-  currentTimeLeftInSession = 4000;
+  displayStopButton: boolean = false;
+  workSessionDuration = 20;
+  currentTimeLeftInSession = 20;
   breakSessionDuration = 300;
+  intervalRef;
+  type = 'Work';
   @ViewChild('timer') timer: ElementRef;
   constructor() {}
 
@@ -22,7 +25,7 @@ export class HomePage implements OnInit {
     let progressBar = new ProgressBar.Circle('.timer', {
       strokeWidth: 2,
       text: {
-        value: `25:00`,
+        value: `${this.updateClock()}`,
         className: 'progressbar__label',
       },
       color: '#f4f4f4',
@@ -31,21 +34,33 @@ export class HomePage implements OnInit {
     });
   }
 
-  clockTimer = () =>
-    setInterval(() => {
-      this.currentTimeLeftInSession--;
+  startClock() {
+    this.intervalRef = setInterval(() => {
+      this.stepDownOrChange();
       console.log(this.currentTimeLeftInSession);
-      this.updateClock();
     }, 1000);
+  };
+
+  displayClock(result) {
+    this.timer.nativeElement.innerText = `${result}`;
+  }
 
   toggleClock = (reset = false) => {
     console.log('toggle clock function');
     if (reset) {
+      this.isClockRunning = false;
+      this.stopClock();
+      this.currentTimeLeftInSession = this.workSessionDuration;
+      let result = this.updateClock();
+      this.displayClock(result);
+      this.displayStopButton = false;
     } else if (this.isClockRunning) {
       this.isClockRunning = false;
+      this.stopClock();
     } else {
       this.isClockRunning = true;
-      this.clockTimer();
+      this.startClock();
+      this.displayStopButton = true;
     }
   };
 
@@ -63,6 +78,27 @@ export class HomePage implements OnInit {
       result += `0${hours}:`;
     }
     result += `${addLeadingZeroes(minutes)}:${addLeadingZeroes(seconds)}`;
-    this.timer.nativeElement.innerText = `${result}`;
+    return result;
   };
+
+  stopClock() {
+    clearInterval(this.intervalRef);
+  }
+
+  stepDownOrChange() {
+    if(this.currentTimeLeftInSession > 0) {
+      this.currentTimeLeftInSession--;
+    } else if (this.currentTimeLeftInSession === 0) {
+      if(this.type === 'Work') {
+        this.currentTimeLeftInSession = this.breakSessionDuration;
+        this.type = 'Break';
+      } else {
+        this.currentTimeLeftInSession = this.workSessionDuration;
+        this.type = 'Work';
+      }
+    }
+    let result = this.updateClock();
+    this.displayClock(result);
+
+  }
 }
