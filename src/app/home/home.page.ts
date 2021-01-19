@@ -13,6 +13,7 @@ export class HomePage implements OnInit {
   currentTimeLeftInSession = 20;
   breakSessionDuration = 300;
   intervalRef;
+  timeSpentInCurrentSession = 0;
   type = 'Work';
   @ViewChild('timer') timer: ElementRef;
   constructor() {}
@@ -88,6 +89,7 @@ export class HomePage implements OnInit {
   stepDownOrChange() {
     if(this.currentTimeLeftInSession > 0) {
       this.currentTimeLeftInSession--;
+      this.timeSpentInCurrentSession++;
     } else if (this.currentTimeLeftInSession === 0) {
       if(this.type === 'Work') {
         this.currentTimeLeftInSession = this.breakSessionDuration;
